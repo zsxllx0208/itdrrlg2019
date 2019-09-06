@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="rlg2019:war exploded">
+    <output-path>$PROJECT_DIR$/rlg2019/target/zsx</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>rlg2019</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="rlg2019" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/rlg2019/target/zsx/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="rlg2019/web/Web" />
+    </root>
+  </artifact>
+</component>
