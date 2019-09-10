@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--    <properties resource="jdbc.properties"/>
+        &lt;!&ndash; 别名 包以其子包下所有类   头字母大小都行&ndash;&gt;
+        <typeAliases>
+            &lt;!&ndash; 		<typeAlias type="com.itdr.pojo.Customer" alias="Customer"/> &ndash;&gt;
+            <package name="com.itdr.zsx.pojo"/>
+        </typeAliases>-->
+
+    <!--设置别名，简化书写-->
+    <!--  <typeAliases>
+          <package name="com.itdr.zsx.pojo"></package>
+      </typeAliases>-->
+
+
+    <!-- 加载映射文件，确定映射文件的位置 -->
+<!--    <mappers>-->
+<!--        <mapper resource="com.itdr.zsx.dao"/>-->
+<!--        这里使用的是配置文件的全路径名-->
+<!--        <mapper resource="com/itdr/zsx/demo2/mapper/StudentMapper.xml.xml"/>-->
+<!--        <package name="com.itdr.zsx.demo2.mapper"/>-->
+<!--    </mappers>-->
+</configuration>
