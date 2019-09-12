@@ -1,10 +1,13 @@
 package com.itdr.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Users {
     private Integer id;
 
@@ -20,10 +23,10 @@ public class Users {
 
     private String answer;
 
-    private Integer role;
-
+    private Integer role = 1;
+    @JsonFormat(locale = "zh", timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
+    @JsonFormat(locale = "zh", timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     public Integer getId() {

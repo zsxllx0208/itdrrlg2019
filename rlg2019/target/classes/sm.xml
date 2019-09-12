@@ -40,6 +40,7 @@ http://www.springframework.org/schema/util/spring-util-4.0.xsd">
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.itdr"/>
+        <property name="basePackage" value="com.itdr.mappers"/>
     </bean>
+
 </beans>
