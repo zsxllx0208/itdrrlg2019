@@ -30,7 +30,7 @@ public class ServiceResponse<T> implements Serializable {
 
     //请求成功，返回数据和默认状态码
     private ServiceResponse(T data) {
-        this.status = 200;
+        this.status = 0;
         this.data = data;
     }
 

@@ -3,12 +3,10 @@ package com.itdr.controller;
 import com.itdr.common.ServiceResponse;
 import com.itdr.pojo.Users;
 import com.itdr.service.UserService;
-import com.itdr.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -96,15 +94,37 @@ public class UserContorller {
 
     //登录中状态重置密码
     @RequestMapping("/reset_password.do")
-    public ServiceResponse<Users> resetPassword(String passwordOld, String passwordNew,HttpSession session) {
+    public ServiceResponse<Users> resetPassword(String passwordOld, String passwordNew, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (user==null){
+        Integer uid = user.getId();
+        if (user == null) {
             return ServiceResponse.defeatedSR(101, "用户未登录");
         } else {
-            ServiceResponse sr = userService.resetPassword(passwordOld,passwordNew);
-
+            ServiceResponse sr = userService.resetPassword(passwordOld, passwordNew, uid);
             return sr;
         }
+    }
+
+    //忘记密码
+    @RequestMapping("/forget_get_question.do")
+    public ServiceResponse<Users> forgetGetQuestion(String username) {
+
+        return userService.forgetGetQuestion(username);
+
+    }
+
+    //提交问题答案
+    @RequestMapping("/forget_check_answer.do")
+    public ServiceResponse<Users> forgetCheckAnswer(String username, String question, String answer) {
+        return userService.forgetCheckAnswer(username, question, answer);
+
+    }
+
+    //忘记密码的重设密码
+    @RequestMapping("/forget_reset_password.do")
+    public ServiceResponse<Users> forgetResetPassword(
+            String username, String passwordNew, String forgetToken) {
+        return userService.forgetResetPassword(username, passwordNew, forgetToken);
 
     }
 }

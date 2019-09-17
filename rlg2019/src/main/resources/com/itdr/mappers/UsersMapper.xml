@@ -145,15 +145,39 @@
         where username=#{param1} and password=#{param2}
     </select>
     <select id="selectByusernameOrEmail" resultType="Integer" parameterType="map">
-    select count(id)
-    from neuedu_user
-    <where>
-        <if test="type=='username'">
-            username=#{srt}
-        </if>
-        <if test="type=='email'">
-            email=#{srt}
-        </if>
-    </where>
+        select count(id)
+        from neuedu_user
+        <where>
+            <if test="type=='username'">
+                username=#{srt}
+            </if>
+            <if test="type=='email'">
+                email=#{srt}
+            </if>
+        </where>
     </select>
+    <update id="updatePasswordById" parameterType="map">
+        update neuedu_user
+        set password = #{md5PasswordNew},
+         update_time = now()
+        where id = #{id}
+    </update>
+    <select id="selectByUsername" resultMap="string" parameterType="java.lang.String">
+        select
+        question
+        from neuedu_user
+        where username = #{username}
+    </select>
+    <select id="selectByUsernameAndQusetionAndAnswer" resultType="java.lang.Integer" parameterType="map">
+        select count(id)
+        from neuedu_user
+        where username=#{username} and  question=#{question} and answer=#{answer}
+    </select>
+
+    <update id="updateByUsernameAndPassword" parameterType="map">
+        update neuedu_user
+        set password = #{md5PasswordNew},
+        update_time = now()
+        where username = #{username}
+    </update>
 </mapper>

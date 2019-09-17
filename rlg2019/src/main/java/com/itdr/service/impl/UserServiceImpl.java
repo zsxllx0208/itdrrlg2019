@@ -1,12 +1,16 @@
 package com.itdr.service.impl;
 
 import com.itdr.common.ServiceResponse;
+import com.itdr.common.TokenCache;
 import com.itdr.mappers.UsersMapper;
 import com.itdr.pojo.Users;
 import com.itdr.service.UserService;
+import com.itdr.utils.MD5Util;
 import com.itdr.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -111,9 +115,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServiceResponse updateInformation(Users users) {
         if (users.getEmail() != null) {
-            int row1 =usersMapper.selectByusernameOrEmail(users.getEmail(),"email");
-            if (row1>0){
-                return ServiceResponse.defeatedSR(103,"邮箱已被注册");
+            int row1 = usersMapper.selectByusernameOrEmail(users.getEmail(), "email");
+            if (row1 > 0) {
+                return ServiceResponse.defeatedSR(103, "邮箱已被注册");
             }
         }
 
@@ -127,8 +131,95 @@ public class UserServiceImpl implements UserService {
 
     //登录中状态重置密码
     @Override
-    public ServiceResponse resetPassword(String passwordOld, String passwordNew) {
-        return null;
+    public ServiceResponse resetPassword(String passwordOld, String passwordNew, Integer id) {
+        if (passwordOld == null || "".equals(passwordOld)) {
+            return ServiceResponse.defeatedSR(101, "旧密码不能为空");
+        }
+        if (passwordNew == null || "".equals(passwordNew)) {
+            return ServiceResponse.defeatedSR(101, "新密码不能为空");
+        }
+        String md5PasswordOld = MD5Utils.getMD5Code(passwordOld);
+        String md5PasswordNew = MD5Utils.getMD5Code(passwordNew);
+        Users users = usersMapper.selectByPrimaryKey(id);
+        if (!users.getPassword().equals(md5PasswordOld)) {
+            return ServiceResponse.defeatedSR(102, "密码不正确");
+        }
+        int row = usersMapper.updatePasswordById(id, md5PasswordNew);
+        if (row < 1) {
+            return ServiceResponse.defeatedSR(103, "修改密码失败");
+        }
+        return ServiceResponse.successSR(0, null, "修改密码成功");
+    }
+
+    //忘记密码
+    @Override
+    public ServiceResponse<Users> forgetGetQuestion(String username) {
+        if (username == null || "".equals(username)) {
+            return ServiceResponse.defeatedSR(101, "用户名不能为空");
+        }
+        int row = usersMapper.selectByusernameOrEmail(username, "username");
+        if (row < 1) {
+            return ServiceResponse.defeatedSR(102, "用户名不存在");
+        }
+        String question = usersMapper.selectByUsername(username);
+        if (question == null || "".equals(question)) {
+            return ServiceResponse.defeatedSR(102, "该用户未设置密码问题");
+        }
+
+        return ServiceResponse.successSR(0, question);
+    }
+
+    //提交问题答案
+    @Override
+    public ServiceResponse<Users> forgetCheckAnswer(String username, String question, String answer) {
+        if (username == null || "".equals(username)) {
+            return ServiceResponse.defeatedSR(101, "用户名不能为空");
+        }
+        if (question == null || "".equals(question)) {
+            return ServiceResponse.defeatedSR(101, "问题不能为空");
+        }
+        if (answer == null || "".equals(answer)) {
+            return ServiceResponse.defeatedSR(101, "答案不能为空");
+        }
+        int row = usersMapper.selectByUsernameAndQusetionAndAnswer(username, question, answer);
+        if (row<1){
+            return ServiceResponse.defeatedSR(103,"答案错误");
+        }
+        //产生随机字符令牌
+        String token = UUID.randomUUID().toString();
+        //把令牌放入缓存中（guava缓存）
+        TokenCache.set("token_"+username,token);
+
+        return  ServiceResponse.successSR(0,token);
+    }
+
+    //忘记密码的重设密码
+    @Override
+    public ServiceResponse<Users> forgetResetPassword(
+            String username, String passwordNew, String forgetToken) {
+        if (username == null || "".equals(username)) {
+            return ServiceResponse.defeatedSR(101, "用户名不能为空");
+        }
+        if (passwordNew == null || "".equals(passwordNew)) {
+            return ServiceResponse.defeatedSR(101, "新密码不能为空");
+        }
+        if (forgetToken == null || "".equals(forgetToken)) {
+            return ServiceResponse.defeatedSR(101, "非法的令牌参数");
+        }
+        //获取缓存token并对比
+        String token = TokenCache.get("token_" + username);
+        if (token == null || "".equals(token)) {
+            return ServiceResponse.defeatedSR(101, "token已失效");
+        }
+        if (!token.equals(forgetToken)){
+            return ServiceResponse.defeatedSR(103,"非法的令牌参数");
+        }
+        String md5PasswordNew = MD5Utils.getMD5Code(passwordNew);
+        int row = usersMapper.updateByUsernameAndPassword(username,md5PasswordNew);
+        if (row<1){
+            return ServiceResponse.defeatedSR(103,"找回密码失败");
+        }
+        return ServiceResponse.successSR(0,null,"找回密码成功");
     }
 
 
