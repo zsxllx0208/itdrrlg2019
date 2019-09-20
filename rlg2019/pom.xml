@@ -157,6 +157,13 @@
             <version>5.1.39</version>
         </dependency>
 
+        <!--分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.10</version>
+        </dependency>
+
         <!--文件上传下载-->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -170,12 +177,12 @@
             <version>2.9.8</version>
         </dependency>
 
-      <!--guava缓存-->
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>22.0</version>
-      </dependency>
+        <!--guava缓存-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+        </dependency>
 
         <!--支付宝接入需要-->
         <dependency>
@@ -195,6 +202,7 @@
             <artifactId>commons-configuration</artifactId>
             <version>1.10</version>
         </dependency>
+
 
         <!--日志框架Logback的依赖-->
         <dependency>

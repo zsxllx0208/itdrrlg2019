@@ -7,6 +7,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="subtitle" property="subtitle" jdbcType="VARCHAR" />
     <result column="main_image" property="mainImage" jdbcType="VARCHAR" />
+    <result column="sub_images" property="subImages" jdbcType="LONGVARCHAR"/>
+    <result column="detail" property="detail" jdbcType="LONGVARCHAR"/>
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="stock" property="stock" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
@@ -21,17 +23,12 @@
     <result column="detail" property="detail" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, category_id, name, subtitle, main_image, price, stock, status, is_new, is_hot, 
+    id, category_id, name, subtitle, main_image,sub_images, detail, price, stock, status, is_new, is_hot,
     is_banner, create_time, update_time
-  </sql>
-  <sql id="Blob_Column_List" >
-    sub_images, detail
   </sql>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from neuedu_product
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -230,4 +227,10 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByProductId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_product
+    where id = #{productId,jdbcType=INTEGER}
+  </select>
 </mapper>

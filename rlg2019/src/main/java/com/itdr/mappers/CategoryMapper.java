@@ -21,4 +21,6 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category record);
 
     List<Category> selectByCategoryId(@Param("cid") Integer cid);
+
+    List<Category> getAll(@Param("categoryId") Integer categoryId);
 }

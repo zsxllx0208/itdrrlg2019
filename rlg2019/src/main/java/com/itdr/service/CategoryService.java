@@ -8,4 +8,6 @@ public interface CategoryService {
     ServiceResponse selectBycategoryId(Integer cid);
     //增加节点
     ServiceResponse addCategory(Category category);
+    //获取当前分类id及递归子节点categoryId
+    ServiceResponse getDeepCategory(Integer categoryId);
 }

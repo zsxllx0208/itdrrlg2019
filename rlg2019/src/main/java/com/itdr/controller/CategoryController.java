@@ -5,6 +5,7 @@ import com.itdr.pojo.Category;
 import com.itdr.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,6 +30,15 @@ public class CategoryController {
     private ServiceResponse<Category> addCategory(Category category) {
 
         ServiceResponse sr = categoryService.addCategory(category);
+
+        return sr;
+    }
+
+    //获取当前分类id及递归子节点categoryId
+    @RequestMapping("/get_deep_category.do")
+    private ServiceResponse<Category> getDeepCategory(@PathVariable("categoryId") Integer categoryId) {
+
+        ServiceResponse sr = categoryService.getDeepCategory(categoryId);
 
         return sr;
     }
