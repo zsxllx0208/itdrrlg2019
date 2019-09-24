@@ -41,12 +41,8 @@ http://www.springframework.org/schema/util/spring-util-4.0.xsd">
         <property name="plugins">
             <array>
                 <bean class="com.github.pagehelper.PageInterceptor">
-                    <property name="properties">
-                        <!--使用下面的方式配置参数，一行配置一个 -->
-                        <value>
-                            params=value1
-                        </value>
-                    </property>
+                    <!--使用下面的方式配置参数，一行配置一个 -->
+                    <property name="properties" value="mysql"/>
                 </bean>
             </array>
         </property>

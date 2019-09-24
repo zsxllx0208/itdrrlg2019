@@ -13,4 +13,8 @@ public class TestDemo {
         String url = dataSource.getUrl();
         System.out.println(url);
     }
+    @Test
+    public void test2(){
+        System.out.println(-5+1/4+2*-3+5.0);
+    }
 }
